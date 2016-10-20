@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>4smartIvana</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>My First Bootstrap Page</h1>
+    <p>This is some text.</p> 
+    <div class="form-group">
+        <label for="base_url">Select list:</label>
+        <select class="form-control" id="base_url">
+            <option value="http://bsbsbb.bsb.lrz.de/~db/0000/REPLACE/images/index.html?nativeno=">bsb</option>
+            <option value="http://www.e-codices.unifr.ch/en/ubb/REPLACE/">ecodices</option>
+        </select>
+        <label for="ms_signatur">MS Signatur:</label>
+        <input type="text" class="form-control" id="ms_signatur">
+
+        <label for="locus_from">Locus from:</label>
+        <input type="number" class="form-control" id="locus_from">
+
+        <label for="locus_from">Locus to:</label>
+        <input type="number" class="form-control" id="locus_to">
+        <button type="submit" class="btn btn-default" id="gogogo">Submit</button>
+    </div>
+    <hr/>
+    <ul class="list-unstyled" id="results">
+        
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $( "#gogogo" ).click(function() {
+        var repo = $( "#base_url option:selected" ).text();
+        var ms_signatur = $( "#ms_signatur").val();
+        var locus_from = parseInt($( "#locus_from" ).val());
+        var locus_to = parseInt($( "#locus_to" ).val());
+        var base_url = $( "#base_url").val();
+        var base_url = base_url.replace("REPLACE", ms_signatur);
+
+        graphs = []
+        if (repo == "bsb"){
+            for (i = locus_from; i <= locus_to ; i++) { 
+                graphs.push("&lt;graph url='"+base_url+i+"r+' n='"+i+"r' /&gt;");
+                graphs.push("&lt;graph url='"+base_url+i+"v+' n='"+i+"v' /&gt;");
+            }
+        }
+        else if (repo == "ecodices"){
+             for (i = locus_from; i <= locus_to ; i++) { 
+                graphs.push("&lt;graph url='"+base_url+i+"r' n='"+i+"r' /&gt;");
+                graphs.push("&lt;graph url='"+base_url+i+"v' n='"+i+"v' /&gt;");
+            }            
+        }
+       // console.log(graphs);
+        $( graphs ).each(function( index, value ) {
+            console.log(value);
+            var hansi = "<li>"+value+"</li>"
+            $( hansi).appendTo("#results");
+        });
+        
+    });
+</script>
+</body>
+</html>
